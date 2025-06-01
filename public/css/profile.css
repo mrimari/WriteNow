@@ -1,0 +1,345 @@
+.profile {
+    background-image: url("/images/zad_fon.png");
+    background-repeat: no-repeat;
+    margin-top: 100px;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    width: 80%;
+    height: 100%;
+    max-width: 1432px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    z-index: 2;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
+    border-radius: 50px;
+}
+
+.profile_png {
+    margin-top: 105px;
+    grid-column: 6 / span 2;
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.dropdown {
+    align-self: flex-end;
+    grid-column: 12;
+    position: relative;
+}
+
+.dropdown_btn {
+    cursor: pointer;
+}
+
+.dropdown_content {
+    margin-top: 20px;
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #dcd9ce;
+    min-width: 160px;
+    width: 300px;
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    z-index: 10;
+}
+
+.dropdown_content a {
+    color: #301b00;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 10px;
+}
+
+.dropdown_content button {
+    cursor: pointer;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    color: #301b00;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 10px;
+}
+
+.dropdown_content button:hover {
+    background-color: #975a1c;
+    color: white;
+    transition: 0.2s;
+    border-radius: 10px;
+}
+
+.dropdown_content a:hover {
+    background-color: #975a1c;
+    color: white;
+    transition: 0.2s;
+    border-radius: 10px;
+}
+
+.dropdown.active .dropdown_content {
+    display: block;
+}
+.pointer {
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: #301b00;
+    margin-top: 5px;
+}
+
+.title_profile {
+    font-size: 40px;
+    color: #975a1c;
+    grid-column: 5 / span 4;
+    font-weight: bold;
+}
+
+.rating {
+    grid-column: 5 / span 4;
+    display: flex;
+    flex-direction: row-reverse; /* Обратный порядок для упрощения логики */
+    justify-content: flex-end;
+}
+.rating input {
+    display: none; /* Скрываем настоящие радио-кнопки */
+}
+.rating label {
+    cursor: pointer;
+    font-size: 64px;
+    color: #b6b4af; /* Цвет неактивных звезд */
+}
+.rating label:hover,
+.rating label:hover ~ label,
+.rating input:checked ~ label {
+    color: #cfa620; /* Цвет активных звезд */
+    transition: 0.3s;
+}
+
+.light {
+    grid-column: 2 / span 10;
+    color: #975a1c;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.info {
+    grid-column: 2 / span 10;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+.works {
+    margin-top: 50px;
+    max-width: 1432px;
+    width: 80%;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-column-gap: 20px;
+    z-index: 2;
+}
+
+.title_works {
+    font-size: 64px;
+    grid-column: 1 / span 4;
+    width: 100%;
+    text-align: left;
+}
+
+.chernovik_btn {
+    grid-column: 7 / span 3;
+}
+
+.new_btn {
+    grid-column: 10 / span 3;
+}
+
+.chernovik_btn,
+.new_btn {
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    background-color: #975a1c;
+    color: white;
+    align-content: center;
+    border-radius: 15px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
+}
+
+.chernovik_btn:hover,
+.new_btn:hover {
+    background-color: white;
+    color: #975a1c;
+    transform: scale(1.05);
+    transition: background-color 0.2s ease, transform 0.5s ease;
+}
+
+.light_num {
+    font-size: 64px;
+    color: #975a1c;
+}
+
+.katalog {
+    margin-top: 25px;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    width: 80%;
+    max-width: 1432px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 20px;
+    z-index: 10;
+}
+
+.card {
+    border-radius: 20px;
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 50px;
+}
+
+.proizv .title_proizv {
+    margin-top: 15px;
+    color: #975a1c;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.proizv {
+    background-color: #d1c6ad;
+    border-radius: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    font-weight: normal;
+}
+
+.description {
+    width: 80%;
+    margin-top: 20px;
+    font-weight: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+.card_footer {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.time{
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.writer,
+.form,
+.description {
+    font-weight: normal;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 65px;
+}
+
+.like {
+    width: 40px;
+    height: 35px;
+}
+
+.delete_btn {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.delete_btn:hover {
+    background-color: #cc0000;
+}
+
+.delete-profile-form {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.subscription-info {
+    grid-column: 5 / span 4;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 15px 0;
+}
+
+.followers-link {
+    text-decoration: none;
+    color: #975a1c;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.followers-count {
+    font-weight: bold;
+    color: #975a1c;
+}
+
+.follow-btn, .unfollow-btn {
+    padding: 8px 20px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+.follow-btn {
+    background-color: #975a1c;
+    color: white;
+}
+
+.follow-btn:hover {
+    background-color: white;
+    color: #975a1c;
+    transform: scale(1.05);
+}
+
+.unfollow-btn {
+    background-color: #dcd9ce;
+    color: #975a1c;
+}
+
+.unfollow-btn:hover {
+    background-color: #975a1c;
+    color: white;
+    transform: scale(1.05);
+}
