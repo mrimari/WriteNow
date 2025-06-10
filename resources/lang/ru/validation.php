@@ -13,6 +13,8 @@ return [
     'unique' => 'Такой :attribute уже существует.',
     'confirmed' => 'Пароли не совпадают.',
     'size' => 'Поле :attribute должно содержать :size символов.',
+    'mimes' => 'Файл :attribute должен быть одного из следующих типов: :values.',
+    'image' => 'Файл :attribute должен быть изображением.',
 
     'attributes' => [
         'name' => 'имя',
@@ -20,5 +22,6 @@ return [
         'password' => 'пароль',
         'password_confirmation' => 'повтор пароля',
         'captcha' => 'код с картинки',
+        'avatar' => 'аватар',
     ],
 ]; 

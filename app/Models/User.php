@@ -23,6 +23,12 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
+        'vk_link',
+        'tg_link',
+        'about',
+        'posts_count',
+        'follower_count',
+        'following_count'
     ];
 
     public function posts()
@@ -97,12 +103,8 @@ class User extends Authenticatable
     {
         if (!$this->isFollowing($user)) {
             $this->following()->attach($user->id);
-            if ($user->profile) {
-            $user->profile->increment('follower_count');
-            }
-            if ($this->profile) {
-            $this->profile->increment('following_count');
-            }
+            $user->increment('follower_count');
+            $this->increment('following_count');
         }
     }
 
@@ -110,12 +112,8 @@ class User extends Authenticatable
     {
         if ($this->isFollowing($user)) {
             $this->following()->detach($user->id);
-            if ($user->profile) {
-            $user->profile->decrement('follower_count');
-            }
-            if ($this->profile) {
-            $this->profile->decrement('following_count');
-            }
+            $user->decrement('follower_count');
+            $this->decrement('following_count');
         }
     }
 
@@ -127,5 +125,14 @@ class User extends Authenticatable
     public function subscription()
     {
         return $this->hasOne(Subscription::class);
+    }
+
+    public function updateCounts()
+    {
+        $this->update([
+            'posts_count' => $this->posts()->count(),
+            'follower_count' => $this->followers()->count(),
+            'following_count' => $this->following()->count()
+        ]);
     }
 }

@@ -148,7 +148,7 @@ class AuthController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'avatar' => ['nullable', 'image', 'mimes:svg,jpeg,png,jpg,gif'],
+            'avatar' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
             'vk_link' => ['nullable', 'string', 'max:255'],
             'tg_link' => ['nullable', 'string', 'max:255'],
             'about' => ['nullable', 'string', 'max:500'],
@@ -158,13 +158,33 @@ class AuthController extends Controller
 
         // Обновление аватара
         if ($request->hasFile('avatar')) {
-            // Удаляем старый аватар, если он не дефолтный
-            if ($user->avatar && $user->avatar !== 'default-avatar.png' && $user->avatar !== 'default-avatar.svg') {
-                Storage::delete('public/avatars/' . $user->avatar);
-            }
+            try {
+                $file = $request->file('avatar');
+                
+                // Дополнительная проверка MIME-типа
+                $mime = $file->getMimeType();
+                $allowedMimes = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
+                
+                if (!in_array($mime, $allowedMimes)) {
+                    return back()->withErrors(['avatar' => 'Недопустимый тип файла. Разрешены только: jpg, png, gif, svg']);
+                }
 
-            $avatarPath = $request->file('avatar')->store('avatars', 'public');
-            $user->avatar = basename($avatarPath);
+                // Удаляем старый аватар, если он не дефолтный
+                if ($user->avatar && $user->avatar !== 'default-avatar.png' && $user->avatar !== 'default-avatar.svg') {
+                    Storage::delete('public/avatars/' . $user->avatar);
+                }
+
+                // Сохраняем новый аватар
+                $avatarPath = $file->store('avatars', 'public');
+                if (!$avatarPath) {
+                    throw new \Exception('Ошибка при сохранении файла');
+                }
+                
+                $user->avatar = basename($avatarPath);
+            } catch (\Exception $e) {
+                \Log::error('Ошибка при загрузке аватара: ' . $e->getMessage());
+                return back()->withErrors(['avatar' => 'Произошла ошибка при загрузке файла. Пожалуйста, попробуйте еще раз.']);
+            }
         }
 
         // Обновление пароля, если предоставлен
@@ -176,9 +196,14 @@ class AuthController extends Controller
         $user->vk_link = $request->vk_link;
         $user->tg_link = $request->tg_link;
         $user->about = $request->about;
-        $user->save();
-
-        return redirect('/profile');
+        
+        try {
+            $user->save();
+            return redirect('/profile')->with('success', 'Профиль успешно обновлен');
+        } catch (\Exception $e) {
+            \Log::error('Ошибка при обновлении профиля: ' . $e->getMessage());
+            return back()->withErrors(['general' => 'Произошла ошибка при сохранении данных']);
+        }
     }
     public function index()
     {

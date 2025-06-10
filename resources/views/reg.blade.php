@@ -30,19 +30,9 @@
                 <label for="email">Эл. почта:</label>
                 <input type="text" id="email" name="email" required autofocus value="{{ old('email') }}"
                     class="@error('email') is-invalid @enderror">
-                @error('email')
-                    <span class="invalid" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
                 <label for="name">Ваше имя(будет видно другим):</label>
                 <input type="text" id="name" name="name" required value="{{ old('name') }}"
                     class="@error('name') is-invalid @enderror">
-                @error('name')
-                    <span class="invalid" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
                 <label for="password">Придумайте пароль:</label>
                 <input type="password" id="password" name="password" required
                     class="@error('password') is-invalid @enderror">
@@ -57,11 +47,6 @@
                 </div>
                 <input type="text" id="captcha" name="captcha" required value="{{ old('captcha') }}"
                     class="@error('captcha') is-invalid @enderror">
-                @error('captcha')
-                    <span class="invalid" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
                 <div class="checkbox_reg">
                     <input type="checkbox" required {{ old('checkbox') ? 'checked' : '' }}>
                     <p>Согласие на обработку перс. данных</p>

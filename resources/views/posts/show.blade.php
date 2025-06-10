@@ -96,7 +96,7 @@
 
 
         <!-- Кнопка пожаловаться -->
-        <!-- @auth
+        @auth
                             <button class="btn btn-sm btn-danger mb-3"
                                 onclick="document.getElementById('report-form').style.display='block'">Пожаловаться</button>
                             <form id="report-form" action="{{ route('reports.store') }}" method="POST"
@@ -116,7 +116,7 @@
                                 <button type="button" class="btn btn-secondary"
                                     onclick="document.getElementById('report-form').style.display='none'">Отмена</button>
                             </form>
-                        @endauth -->
+                        @endauth
 
 
         <div class="comments-section">

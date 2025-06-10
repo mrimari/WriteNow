@@ -63,9 +63,7 @@ class PostController extends Controller
 
         // Обновляем статистику профиля
         $user = auth()->user();
-        if ($user->profile) {
-            $user->profile->updateCounts();
-        }
+        $user->updateCounts();
 
         // Перенаправляем на страницу черновиков, если это черновик
         if ($action === 'draft') {
