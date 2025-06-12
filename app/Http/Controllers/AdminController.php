@@ -21,7 +21,7 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::with('profile')->paginate(20);
+        $users = User::paginate(20);
         return view('admin.users.index', compact('users'));
     }
 
@@ -55,9 +55,6 @@ class AdminController extends Controller
     {
         $user = $post->user;
         $post->delete();
-
-        // Проверяем достижения после удаления поста
-        app(AchievementService::class)->checkAchievements($user);
 
         return redirect()->route('admin.posts')->with('success', 'Пост успешно удален');
     }

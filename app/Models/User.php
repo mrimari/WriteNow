@@ -81,7 +81,7 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne(UserProfile::class);
+        return $this->hasOne(User::class, 'id', 'id');
     }
 
     public function followers()

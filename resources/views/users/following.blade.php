@@ -1,60 +1,70 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-<div class="container" style="z-index: 10;">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Подписки {{ $user->name }}</h5>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/following.css') }}">
+    <title>Подписки {{ $user->name }}</title>
+</head>
 
-                <div class="card-body">
-                    @forelse($following as $followed)
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="flex-shrink-0">
-                                @if($followed->profile && $followed->profile->avatar)
-                                    <img src="{{ asset('storage/' . $followed->profile->avatar) }}" 
-                                         alt="{{ $followed->name }}" 
-                                         class="rounded-circle"
-                                         style="width: 50px; height: 50px; object-fit: cover;">
-                                @else
-                                    <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
-                                         style="width: 50px; height: 50px;">
-                                        <span class="text-white">{{ substr($followed->name, 0, 1) }}</span>
-                                    </div>
-                                @endif
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <h6 class="mb-0">
-                                    <a href="{{ route('showUser', $followed) }}" class="text-decoration-none">
-                                        {{ $followed->name }}
-                                    </a>
-                                </h6>
-                                @if($followed->profile && $followed->profile->bio)
-                                    <small class="text-muted">{{ Str::limit($followed->profile->bio, 100) }}</small>
-                                @endif
-                            </div>
-                            @if(auth()->id() === $user->id)
-                                <form action="{{ route('users.unfollow', $followed) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                                        Отписаться
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
-                    @empty
-                        <p class="text-center mb-0">У пользователя пока нет подписок</p>
-                    @endforelse
-
-                    <div class="d-flex justify-content-center">
-                        {{ $following->links() }}
+<body>
+    <div class="background">
+        <section class="header_edit">
+            <a class="logo_edit" href="{{ route('home') }}">
+                <img src="{{ asset('images/logo.svg') }}" alt="Логотип компании">
+            </a>
+            <a href="{{ url()->previous() }}" class="back">
+                🠔 Вернуться
+            </a>
+        </section>
+        <section class="content">
+            <div class="header_content">
+                <p>Аватар</p>
+                <p>Имя</p>
+                <p>Дата подписки</p>
+                <p>Действия</p>
+            </div>
+            <hr class="line_content">
+            @forelse($following as $followed)
+                <div class="content_content">
+                    <div>
+                        <img src="{{ asset('storage/avatars/' . ($followed->avatar ?? 'default-avatar.svg')) }}" 
+                             alt="{{ $followed->name }}" 
+                             class="default-avatar">
+                    </div>
+                    <div>
+                        <a href="{{ route('showUser', $followed) }}" class="text-decoration-none">
+                            {{ $followed->name }}
+                        </a>
+                    </div>
+                    <div>
+                        {{ $followed->pivot->created_at ? $followed->pivot->created_at->format('d.m.Y') : 'Дата не указана' }}
+                    </div>
+                    <div>
+                        @if(auth()->id() === $user->id)
+                            <form action="{{ route('users.unfollow', $followed) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn_content">
+                                    Отписаться
+                                </button>
+                            </form>
+                        @endif
                     </div>
                 </div>
+            @empty
+                <div class="content_content">
+                    <p style="grid-column: span 4; text-align: center;">У пользователя пока нет подписок</p>
+                </div>
+            @endforelse
+            
+            <div style="grid-column: 1 / span 12; margin-top: 20px; display: flex; justify-content: center;">
+                {{ $following->links() }}
             </div>
-        </div>
+        </section>
     </div>
-</div>
-@endsection 
+</body>
+
+</html>
