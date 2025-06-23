@@ -89,13 +89,13 @@ class Post extends Model
     {
         if (!$user)
             return false;
-        return $this->likes()->where('user_id', $user->id)->where('is_like', 1)->exists();
+        return $this->likes()->where('user_id', $user->id)->where('is_like', true)->exists();
     }
 
     public function isDislikedBy($user)
     {
         if (!$user)
             return false;
-        return $this->likes()->where('user_id', $user->id)->where('is_like', 0)->exists();
+        return $this->likes()->where('user_id', $user->id)->where('is_like', false)->exists();
     }
 }

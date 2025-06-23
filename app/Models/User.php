@@ -38,12 +38,19 @@ class User extends Authenticatable
 
     public function scopeFilter($query, array $filters)
     {
-        // Фильтр по дате
+        // Поиск по имени
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            $query->where('name', 'like', '%' . $search . '%');
+        });
+
+        // Фильтр по дате и популярности
         $query->when($filters['filter'] ?? false, function ($query, $filter) {
             if ($filter === 'new') {
                 $query->orderBy('created_at', 'desc');
             } elseif ($filter === 'old') {
                 $query->orderBy('created_at', 'asc');
+            } elseif ($filter === 'popular') {
+                $query->orderBy('follower_count', 'desc');
             }
         });
 

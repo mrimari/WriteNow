@@ -61,84 +61,142 @@
 @endsection
 
 @section('content')
-<div class="container" style="z-index: 10; position: relative;">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Детали жалобы</h5>
-                        <a href="{{ route('reports.index') }}" class="btn btn-sm btn-outline-secondary">
-                            Назад к списку
-                        </a>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="report-details mb-4">
-                        <h6 class="mb-3">Информация о жалобе</h6>
-                        <div class="mb-2">
-                            <strong>Статус:</strong>
-                            <span class="badge bg-{{ $report->status === 'pending' ? 'warning' : ($report->status === 'resolved' ? 'success' : 'danger') }}">
-                                {{ $report->status }}
-                            </span>
-                        </div>
-                        <div class="mb-2">
-                            <strong>Отправитель:</strong> {{ $report->user->name }}
-                        </div>
-                        <div class="mb-2">
-                            <strong>Причина:</strong> {{ $report->reason }}
-                        </div>
-                        @if($report->description)
-                            <div class="mb-2">
-                                <strong>Описание:</strong>
-                                <p class="mb-0">{{ $report->description }}</p>
-                            </div>
-                        @endif
-                        <div class="mb-2">
-                            <strong>Тип контента:</strong> {{ class_basename($report->reportable_type) }}
-                        </div>
-                        <div class="mb-2">
-                            <strong>Дата создания:</strong> {{ $report->created_at->format('d.m.Y H:i') }}
-                        </div>
-                    </div>
-
-                    <div class="reportable-content mb-4">
-                        <h6 class="mb-3">Содержание контента</h6>
-                        <div class="card">
-                            <div class="card-body">
-                                @if($report->reportable_type === 'App\\Models\\Post')
-                                    <h5>{{ $report->reportable->title }}</h5>
-                                    <p>{{ $report->reportable->content }}</p>
-                                @elseif($report->reportable_type === 'App\\Models\\Comment')
-                                    <p>{{ $report->reportable->content }}</p>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-
-                    @if($report->status === 'pending')
-                        <div class="report-actions">
-                            <form action="{{ route('reports.resolve', $report) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-success">
-                                    Разрешить
-                                </button>
-                            </form>
-
-                            <form action="{{ route('reports.reject', $report) }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-danger">
-                                    Отклонить
-                                </button>
-                            </form>
-                        </div>
-                    @endif
-                </div>
+<div style="margin-top: 100px; z-index: 1000;" class="admin-container">
+    <div class="admin-header">
+        <h1>Жалоба #{{ $report->id }}</h1>
+        <p class="admin-subtitle">Детальная информация</p>
+    </div>
+    
+    @include('admin.navigation')
+    
+    <!-- Основная информация -->
+    <div class="admin-form">
+        <div class="admin-form-group">
+            <label class="admin-form-label">Статус</label>
+            <div>
+                @if($report->status === 'pending')
+                    <span class="admin-status admin-status-pending">Ожидает рассмотрения</span>
+                @elseif($report->status === 'resolved')
+                    <span class="admin-status admin-status-resolved">Принята</span>
+                @elseif($report->status === 'rejected')
+                    <span class="admin-status admin-status-rejected">Отклонена</span>
+                @else
+                    <span class="admin-status">{{ $report->status }}</span>
+                @endif
             </div>
         </div>
+        
+        <div class="admin-form-group">
+            <label class="admin-form-label">Отправитель</label>
+            <div>{{ $report->user->name ?? 'Неизвестный пользователь' }}</div>
+        </div>
+        
+        <div class="admin-form-group">
+            <label class="admin-form-label">Причина</label>
+            <div>{{ $report->reason }}</div>
+        </div>
+        
+        @if($report->description)
+            <div class="admin-form-group">
+                <label class="admin-form-label">Описание</label>
+                <div>{{ $report->description }}</div>
+            </div>
+        @endif
+        
+        <div class="admin-form-group">
+            <label class="admin-form-label">Тип контента</label>
+            <div>
+                @if($report->reportable_type === 'App\\Models\\Post')
+                    Пост
+                @elseif($report->reportable_type === 'App\\Models\\Comment')
+                    Комментарий
+                @else
+                    {{ class_basename($report->reportable_type) }}
+                @endif
+            </div>
+        </div>
+        
+        <div class="admin-form-group">
+            <label class="admin-form-label">Дата создания</label>
+            <div>{{ $report->created_at->format('d.m.Y H:i') }}</div>
+        </div>
+    </div>
+    
+    <!-- Контент -->
+    @if($report->reportable)
+        <div class="admin-form">
+            <h3 class="admin-card-title">Контент</h3>
+            <div class="admin-table-container">
+                @if($report->reportable_type === 'App\\Models\\Post')
+                    <div style="margin-bottom: 15px;">
+                        <h4 style="color: #301b00; margin-bottom: 10px;">{{ $report->reportable->title }}</h4>
+                        <div style="background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 8px; border: 1px solid #e6ceb2; margin-bottom: 15px;">
+                            {{ Str::limit($report->reportable->content, 600) }}
+                            @if(strlen($report->reportable->content) > 600)
+                                <span style="color: #975a1c;">...</span>
+                            @endif
+                        </div>
+                        
+                        <div style="margin-bottom: 15px; font-size: 14px; color: #975a1c;">
+                            Автор: {{ $report->reportable->user->name ?? 'Неизвестно' }} | 
+                            Создан: {{ $report->reportable->created_at->format('d.m.Y') }}
+                        </div>
+                        
+                        <a href="{{ route('posts.show', $report->reportable) }}" class="admin-btn admin-btn-primary" target="_blank">
+                            Открыть пост
+                        </a>
+                    </div>
+                @elseif($report->reportable_type === 'App\\Models\\Comment')
+                    <div style="background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 8px; border: 1px solid #e6ceb2; margin-bottom: 15px;">
+                        <p style="margin-bottom: 10px;">{{ $report->reportable->content }}</p>
+                        <div style="font-size: 14px; color: #975a1c;">
+                            Автор: {{ $report->reportable->user->name ?? 'Неизвестно' }} | 
+                            Создан: {{ $report->reportable->created_at->format('d.m.Y') }}
+                        </div>
+                    </div>
+                @else
+                    <p>Контент недоступен для предварительного просмотра</p>
+                @endif
+            </div>
+        </div>
+    @else
+        <div class="admin-form">
+            <h3 class="admin-card-title">Контент</h3>
+            <div class="admin-empty-state">
+                <p>Контент был удален</p>
+            </div>
+        </div>
+    @endif
+    
+    <!-- Действия -->
+    @if($report->status === 'pending')
+        <div class="admin-form">
+            <h3 class="admin-card-title">Действия</h3>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <form action="{{ route('reports.resolve', $report) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="admin-btn admin-btn-success" onclick="return confirm('Принять жалобу?')">
+                        Принять
+                    </button>
+                </form>
+                
+                <form action="{{ route('reports.reject', $report) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="admin-btn admin-btn-danger" onclick="return confirm('Отклонить жалобу?')">
+                        Отклонить
+                    </button>
+                </form>
+            </div>
+        </div>
+    @endif
+    
+    <!-- Навигация -->
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ route('admin.reports') }}" class="admin-btn admin-btn-primary">
+            Назад к списку
+        </a>
     </div>
 </div>
 @endsection 

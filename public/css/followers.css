@@ -35,11 +35,22 @@
     z-index: 2;
 }
 
-.title{
+.followers-page {
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title {
     font-size: 36px;
 }
 
-.following-table {
+.user-name {
+    font-size: 36px;
+    font-weight: bold;
+    color: #975a1c;
+}
+
+.followers-table {
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
@@ -49,29 +60,38 @@
     box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
 }
 
-.following-table th,
-.following-table td {
+.followers-table th,
+.followers-table td {
     padding: 15px 0;
     text-align: center;
     border-bottom: 1px solid #975a1c;
 }
 
-.following-table th {
+.followers-table th {
     font-weight: bold;
 }
 
-.following-table tr:last-child td {
+.followers-table tr:last-child td {
     border-bottom: none;
 }
 
-.default-avatar {
+.follower-avatar {
     width: 75px;
     height: 75px;
     border-radius: 50%;
     object-fit: cover;
 }
 
-.btn_content {
+.follower-name {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.follower-name:hover {
+    color: #975a1c;
+}
+
+.follow-btn, .unfollow-btn {
     background: #975a1c;
     color: #fff;
     border: none;
@@ -80,51 +100,63 @@
     cursor: pointer;
 }
 
-.btn_content:hover {
+.follow-btn:hover, .unfollow-btn:hover {
     background: #ffffff;
     color: #975a1c;
     transform: scale(1.05);
     transition: 0.2s;
 }
 
+.no-followers {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+}
+
+.pagination {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
 /* Мобильные стили */
 @media (max-width: 768px) {
-    .following-table {
+    .followers-table {
         display: block;
         border-radius: 0;
         box-shadow: none;
     }
-    .following-table thead {
+    .followers-table thead {
         display: none;
     }
-    .following-table tbody {
+    .followers-table tbody {
         display: block;
     }
-    .following-table tr {
+    .followers-table tr {
         display: block;
         margin-bottom: 15px;
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.5);
     }
-    .following-table td {
+    .followers-table td {
         display: block;
         padding: 8px 0;
         border: none;
         text-align: center;
     }
-    .following-table td:first-child {
+    .followers-table td:first-child {
         padding-top: 0;
     }
-    .following-table td:last-child {
+    .followers-table td:last-child {
         padding-bottom: 0;
     }
-    .default-avatar {
+    .follower-avatar {
         width: 60px;
         height: 60px;
         margin: 0 auto 10px;
     }
-    .btn_content {
+    .follow-btn, .unfollow-btn {
         width: 100%;
         padding: 10px;
         font-size: 16px;
@@ -140,13 +172,13 @@
     .back {
         align-self: flex-start;
     }
-    .following-table tr {
+    .followers-table tr {
         margin-bottom: 10px;
         padding: 10px;
     }
 }
 
-.following_form {
+.followers_form {
     width: 80%;
     max-width: 1432px;
     display: grid;
@@ -156,7 +188,7 @@
     z-index: 1;
 }
 
-.following_item {
+.follower_item {
     grid-column: span 3;
     z-index: 1;
 }

@@ -1,42 +1,37 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="z-index: 10;">
-    <div class="row justify-content-center">
-        <div class="col-md-12">
-            <h1 class="mb-4">Панель администратора</h1>
-            
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Пользователи</h5>
-                            <p class="card-text">Всего пользователей: {{ $usersCount }}</p>
-                            <a href="{{ route('admin.users') }}" class="btn btn-primary">Управление пользователями</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Посты</h5>
-                            <p class="card-text">Всего постов: {{ $postsCount }}</p>
-                            <a href="{{ route('admin.posts') }}" class="btn btn-primary">Управление постами</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Жалобы</h5>
-                            <p class="card-text">Ожидающих рассмотрения: {{ $reportsCount }}</p>
-                            <a href="{{ route('admin.reports') }}" class="btn btn-primary">Управление жалобами</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="admin-container">
+    <div class="admin-header">
+        <h1>Панель администратора</h1>
+        <p class="admin-subtitle">Управление контентом и пользователями</p>
+    </div>
+    
+    @include('admin.navigation')
+    
+    <div class="admin-stats">
+        <div class="admin-card">
+            <h5 class="admin-card-title">Пользователи</h5>
+            <p class="admin-card-text">Всего пользователей: {{ $usersCount }}</p>
+            <a href="{{ route('admin.users') }}" class="admin-card-btn">Управление пользователями</a>
+        </div>
+        
+        <div class="admin-card">
+            <h5 class="admin-card-title">Посты</h5>
+            <p class="admin-card-text">Всего постов: {{ $postsCount }}</p>
+            <a href="{{ route('admin.posts') }}" class="admin-card-btn">Управление постами</a>
+        </div>
+        
+        <div class="admin-card">
+            <h5 class="admin-card-title">Жалобы</h5>
+            <p class="admin-card-text">Ожидающих рассмотрения: {{ $reportsCount }}</p>
+            <a href="{{ route('admin.reports') }}" class="admin-card-btn">Управление жалобами</a>
+        </div>
+        
+        <div class="admin-card">
+            <h5 class="admin-card-title">Статистика</h5>
+            <p class="admin-card-text">Подробная аналитика</p>
+            <a href="{{ route('admin.statistics') }}" class="admin-card-btn">Просмотр статистики</a>
         </div>
     </div>
 </div>

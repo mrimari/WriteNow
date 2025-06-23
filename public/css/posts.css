@@ -91,3 +91,94 @@
     width: 40px;
     height: 35px;
 }
+
+.posts_form {
+    width: 80%;
+    max-width: 1432px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+    z-index: 1;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    padding: 10px 20px;
+    width: fit-content;
+    z-index: 2;
+}
+.pagination li {
+    list-style: none;
+}
+.pagination li a,
+.pagination li.active span,
+.pagination li.disabled span {
+    display: inline-block;
+    background: #975a1c;
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px 14px;
+    margin: 0 2px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+.pagination li.active span,
+.pagination li a:hover {
+    background: #fff;
+    color: #975a1c;
+    transform: scale(1.08);
+}
+.pagination li.disabled span {
+    background: #e0e0e0;
+    color: #aaa;
+    cursor: not-allowed;
+    border: none;
+}
+/* Обычные span (например, разделители или текст) не стилизуем как кнопки */
+.pagination > li:not(.active):not(.disabled) > span {
+    background: none;
+    color: #975a1c;
+    border: none;
+    padding: 0 4px;
+    font-size: 18px;
+    transform: none;
+    cursor: default;
+}
+
+.pagination-info {
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.pagination-info p {
+    margin: 0;
+    color: #6c757d;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+@media (max-width: 700px) {
+    .katalog {
+        grid-template-columns: repeat(1, 1fr);
+        width: 80%;
+        margin-top: 0;
+        max-width: 100%;
+        padding: 0 20px;
+    }
+    
+    .card {
+        margin-bottom: 10px;
+    }
+
+}

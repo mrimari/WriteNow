@@ -21,6 +21,10 @@ Route::get('/terms', function () {
     return view('terms');
 })->name('terms');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 // Группа гостевых роутов
 Route::middleware('guest')->group(function () {
     Route::get('/reg', [AuthController::class, 'registerForm'])->name('reg');
@@ -75,6 +79,7 @@ Route::middleware('auth')->group(function () {
     // Маршруты для администратора
     Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/statistics', [AdminController::class, 'statistics'])->name('admin.statistics');
         Route::get('/users', [AdminController::class, 'users'])->name('admin.users');
         Route::post('/users/{user}/toggle-admin', [AdminController::class, 'toggleAdmin'])->name('admin.users.toggle-admin');
         Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('admin.users.delete');

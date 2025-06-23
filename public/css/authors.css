@@ -53,3 +53,90 @@
     transform: scale(1.05);
     transition: background-color 0.2s ease, transform 0.5s ease;
 }
+
+.authors_form {
+    width: 80%;
+    max-width: 1432px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+    z-index: 1;
+}
+
+@media (max-width: 700px) {
+    .authors {
+        margin-top: 0;
+        grid-template-columns: repeat(1, 1fr);
+        width: 80%;
+        height: 100%;
+        max-width: 100%;
+        padding: 0 20px;
+    }
+}
+
+/* Стили для активных кнопок фильтров */
+.all_works.active,
+.new_works.active,
+.old_works.active {
+    background-color: #975a1c !important;
+    color: white !important;
+    transform: scale(1.05);
+}
+
+/* Стили для пагинации */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    padding: 10px 20px;
+    width: fit-content;
+    margin: 20px auto;
+    z-index: 2;
+}
+
+.pagination li {
+    list-style: none;
+}
+
+.pagination li a,
+.pagination li.active span,
+.pagination li.disabled span {
+    display: inline-block;
+    background: #975a1c;
+    color: #fff;
+    border-radius: 8px;
+    padding: 6px 14px;
+    margin: 0 2px;
+    text-decoration: none;
+    font-size: 18px;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    cursor: pointer;
+}
+
+.pagination li.active span,
+.pagination li a:hover {
+    background: #fff;
+    color: #975a1c;
+    transform: scale(1.08);
+}
+
+.pagination li.disabled span {
+    background: #e0e0e0;
+    color: #aaa;
+    cursor: not-allowed;
+    border: none;
+}
+
+/* Обычные span (например, разделители или текст) не стилизуем как кнопки */
+.pagination > li:not(.active):not(.disabled) > span {
+    background: none;
+    color: #975a1c;
+    border: none;
+    padding: 0 4px;
+    font-size: 18px;
+    transform: none;
+    cursor: default;
+}

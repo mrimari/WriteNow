@@ -82,9 +82,11 @@
             </a>
         @endforeach
     </div>
+    
     <div class="pagination">
-        {{ $posts->links() }}
+        {{ $posts->links('vendor.pagination.custom') }}
     </div>
+
 
     <script>
         // JavaScript для открытия/закрытия выпадающего списка
@@ -99,6 +101,34 @@
             dropdowns.forEach(dropdown => {
                 if (!dropdown.contains(event.target)) {
                     dropdown.classList.remove('active');
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Делегируем клик по пагинации
+            document.body.addEventListener('click', function (e) {
+                if (e.target.tagName === 'A' && e.target.closest('.pagination')) {
+                    e.preventDefault();
+                    let url = e.target.getAttribute('href');
+                    fetch(url, {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    })
+                        .then(response => response.text())
+                        .then(html => {
+                            // Парсим только .katalog и .pagination из ответа
+                            let parser = new DOMParser();
+                            let doc = parser.parseFromString(html, 'text/html');
+                            let newKatalog = doc.querySelector('.katalog');
+                            let newPagination = doc.querySelector('.pagination');
+                            if (newKatalog && newPagination) {
+                                document.querySelector('.katalog').innerHTML = newKatalog.innerHTML;
+                                document.querySelector('.pagination').innerHTML = newPagination.innerHTML;
+                                window.scrollTo({ top: document.querySelector('.katalog').offsetTop, behavior: 'smooth' });
+                            }
+                        });
                 }
             });
         });

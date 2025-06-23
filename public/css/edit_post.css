@@ -1,3 +1,4 @@
+/* Стили для страницы редактирования поста */
 .header_edit {
     width: 80%;
     max-width: 1432px;
@@ -129,35 +130,10 @@
     content: attr(placeholder);
     color: #696969;
 }
-mark {
-    background-color: rgb(180, 91, 39);
-    border-radius: 3px;
-    padding: 0 2px;
-}
 
 #editor {
-    white-space: pre-wrap; /* сохраняет \n как видимые переносы */
+    white-space: pre-wrap;
     line-height: 1.5;
-}
-
-.create_post_form {
-    width: 80%;
-    max-width: 1432px;
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 20px;
-    margin-top: 40px;
-    z-index: 1;
-}
-
-.post_title {
-    grid-column: 1 / span 6;
-    z-index: 1;
-}
-
-.post_content {
-    grid-column: 7 / span 6;
-    z-index: 1;
 }
 
 /* Медиа-запрос для мобильных устройств */
@@ -225,34 +201,6 @@ mark {
         font-size: 16px;
     }
 
-    /* Стили для проверки текста */
-    .loading {
-        font-size: 14px;
-        margin: 8px 0;
-    }
-
-    .error-stats {
-        font-size: 14px;
-        padding: 8px 12px;
-        margin: 8px 0;
-    }
-
-    .error-tooltip {
-        font-size: 12px;
-        padding: 4px 8px;
-        max-width: 250px;
-    }
-
-    .suggestions {
-        font-size: 11px;
-    }
-
-    .suggestion {
-        padding: 3px 6px;
-        margin: 3px;
-        font-size: 11px;
-    }
-
     /* Улучшение для touch устройств */
     .btn_content:active {
         transform: scale(0.98);
@@ -265,4 +213,4 @@ mark {
         outline: 2px solid #975a1c;
         outline-offset: 2px;
     }
-}
+} 

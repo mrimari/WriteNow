@@ -26,21 +26,22 @@ class PostInteractionController extends Controller
 
     public function toggleLike(Request $request, Post $post)
     {
+        $isLike = (bool) $request->is_like;
         $like = $post->likes()->where('user_id', Auth::id())->first();
 
         if ($like) {
-            if ($like->is_like === $request->is_like) {
+            if ($like->is_like == $isLike) {
                 $like->delete();
                 return back()->with('success', 'Реакция удалена');
             } else {
-                $like->update(['is_like' => $request->is_like]);
+                $like->update(['is_like' => $isLike]);
                 return back()->with('success', 'Реакция изменена');
             }
         }
 
         $post->likes()->create([
             'user_id' => Auth::id(),
-            'is_like' => $request->is_like
+            'is_like' => $isLike
         ]);
 
         return back()->with('success', 'Реакция добавлена');

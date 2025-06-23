@@ -95,29 +95,6 @@
         </div>
 
 
-        <!-- Кнопка пожаловаться -->
-        @auth
-            <button class="btn btn-sm btn-danger mb-3"
-                onclick="document.getElementById('report-form').style.display='block'">Пожаловаться</button>
-            <form id="report-form" action="{{ route('reports.store') }}" method="POST"
-                style="display:none; margin-bottom: 1rem;">
-                @csrf
-                <input type="hidden" name="reportable_type" value="App\Models\Post">
-                <input type="hidden" name="reportable_id" value="{{ $post->id }}">
-                <div class="form-group mb-2">
-                    <label for="reason">Причина жалобы:</label>
-                    <input type="text" name="reason" class="form-control" required maxlength="255">
-                </div>
-                <div class="form-group mb-2">
-                    <label for="description">Описание (необязательно):</label>
-                    <textarea name="description" class="form-control" maxlength="1000"></textarea>
-                </div>
-                <button type="submit" class="btn btn-danger">Отправить жалобу</button>
-                <button type="button" class="btn btn-secondary"
-                    onclick="document.getElementById('report-form').style.display='none'">Отмена</button>
-            </form>
-        @endauth
-
 
         <div class="comments-section">
             <p class="light comments-title">Комментарии:</p>
@@ -161,6 +138,31 @@
                 @endforeach
             </div>
         </div>
+        @auth
+            <div class="report-section">
+                <button class="report-btn"
+                    onclick="document.getElementById('report-form').style.display='block'">Пожаловаться</button>
+                <form id="report-form" action="{{ route('reports.store') }}" method="POST" class="report-form"
+                    style="display:none;">
+                    @csrf
+                    <input type="hidden" name="reportable_type" value="App\Models\Post">
+                    <input type="hidden" name="reportable_id" value="{{ $post->id }}">
+                    <div class="report-form-group">
+                        <label for="reason">Причина жалобы:</label>
+                        <input type="text" name="reason" required maxlength="255">
+                    </div>
+                    <div class="report-form-group">
+                        <label for="description">Описание (необязательно):</label>
+                        <textarea name="description" maxlength="1000"></textarea>
+                    </div>
+                    <div class="report-form-buttons">
+                        <button type="submit" class="report-submit-btn">Отправить жалобу</button>
+                        <button type="button" class="report-cancel-btn"
+                            onclick="document.getElementById('report-form').style.display='none'">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        @endauth
     </div>
 
 @endsection

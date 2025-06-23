@@ -96,7 +96,7 @@ class AuthController extends Controller
                 $query->where('is_like', false);
             }])
             ->latest()
-            ->paginate(10);
+            ->paginate(4);
         return view('profile', compact('user', 'posts'));
     }
 
@@ -209,13 +209,45 @@ class AuthController extends Controller
     {
         $query = User::query();
 
+        // Определяем количество элементов на странице в зависимости от устройства
+        $perPage = $this->isMobileDevice() ? 6 : 10;
+
         $users = $query
-            ->filter(request(['filter']))
-            ->paginate(10);
+            ->filter(request(['search', 'filter']))
+            ->paginate($perPage);
 
         return view('users', [
             'users' => $users
         ]);
+    }
+
+    /**
+     * Определяет, является ли устройство мобильным
+     * 
+     * @return bool
+     */
+    private function isMobileDevice()
+    {
+        // Сначала проверяем параметр из JavaScript
+        if (request()->has('is_mobile')) {
+            return request()->input('is_mobile') == '1';
+        }
+        
+        $userAgent = request()->header('User-Agent');
+        
+        // Проверяем наличие мобильных ключевых слов в User-Agent
+        $mobileKeywords = [
+            'Mobile', 'Android', 'iPhone', 'iPad', 'Windows Phone',
+            'BlackBerry', 'Opera Mini', 'IEMobile'
+        ];
+        
+        foreach ($mobileKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     public function showUser(User $user)

@@ -15,6 +15,9 @@ class PostController extends Controller
         $genres = Post::select('genre')->distinct()->pluck('genre');
         $forms = Post::select('form')->distinct()->pluck('form');
 
+        // Определяем количество элементов на странице в зависимости от устройства
+        $perPage = $this->isMobileDevice() ? 6 : 12;
+
         $posts = Post::with('user')
             ->where('status', 'published')
             ->withCount(['likes as likes_count' => function($query) {
@@ -24,7 +27,7 @@ class PostController extends Controller
                 $query->where('is_like', false);
             }])
             ->filter(request(['search_title', 'search_id', 'genre', 'form', 'filter']))
-            ->paginate(10);
+            ->paginate($perPage);
 
         return view('posts.posts', [
             'posts' => $posts,
@@ -32,6 +35,36 @@ class PostController extends Controller
             'forms' => $forms
         ]);
     }
+
+    /**
+     * Определяет, является ли устройство мобильным
+     * 
+     * @return bool
+     */
+    private function isMobileDevice()
+    {
+        // Сначала проверяем параметр из JavaScript
+        if (request()->has('is_mobile')) {
+            return request()->input('is_mobile') == '1';
+        }
+        
+        $userAgent = request()->header('User-Agent');
+        
+        // Проверяем наличие мобильных ключевых слов в User-Agent
+        $mobileKeywords = [
+            'Mobile', 'Android', 'iPhone', 'iPad', 'Windows Phone',
+            'BlackBerry', 'Opera Mini', 'IEMobile'
+        ];
+        
+        foreach ($mobileKeywords as $keyword) {
+            if (stripos($userAgent, $keyword) !== false) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
     public function create()
     {
         return view('posts.create_post');
