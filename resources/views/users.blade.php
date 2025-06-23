@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('style')
-<link rel="stylesheet" href="{{ asset('css/authors.css') }}">
+<link rel="stylesheet" href="{{ asset('css/authors.css') }}?v={{ time() }}">
 @endsection
 @section('content')
     <form method="GET" action="{{ route('users') }}" class="search_form" data-filter-form>

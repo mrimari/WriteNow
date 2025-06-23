@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="{{ asset('css/global.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/edit_post.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/global.css') }}?v={{ time() }}">
+    <link rel="stylesheet" href="{{ asset('css/edit_post.css') }}?v={{ time() }}">
     <title>Редактировать пост</title>
 </head>
 <body>

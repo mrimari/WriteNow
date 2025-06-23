@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('style')
-<link rel="stylesheet" href="{{ asset('css/home.css') }}">
+<link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ time() }}">
 @endsection
 @section('content')
         <section class="container_1">
@@ -17,17 +17,17 @@
             <div class="offer">
                 <h1>Мы <span class="hightlight">вам</span> предлагаем</h1>
                 <div class="block1_2">
-                    <img class="icon" src="{{'images/prodvizh.svg'}}" alt="">
+                    <img class="icon" src="{{ asset('images/prodvizh.svg') }}" alt="">
                     <p class="title">Продвижение</p>
                     <p>Узнаваемость автора и ажиотаж вокруг его произведений</p>
                 </div>
                 <div class="block2_2">
-                    <img class="icon" src="{{'images/support.svg'}}" alt="">
+                    <img class="icon" src="{{ asset('images/support.svg') }}" alt="">
                     <p class="title">Круглосоточная поддержка</p>
                     <p>Обращайтесь в любое время. Ответ от администраторов не заставит долго ждать</p>
                 </div>
                 <div class="block3_2">
-                    <img class="icon" src="{{'images/formats.svg'}}" alt="">
+                    <img class="icon" src="{{ asset('images/formats.svg') }}" alt="">
                     <p class="title">Свобода форматов и жанров</p>
                     <p>Публикуйте свои произведения в любых жанрах и в любых размерах</p>
                 </div>
@@ -51,7 +51,7 @@
                                 <a href="{{ route('showUser', ['user' => $post->user->id]) }}" class="name_author">{{ $post->user->name }}</a>
                             </div>
                             <div class="likes">
-                                <img class="like" src="{{ 'images/like.svg' }}" alt="">
+                                <img class="like" src="{{ asset('images/like.svg') }}" alt="">
                                 <span class="num">{{ $post->likes_count - $post->dislikes_count }}</span>
                             </div>
                         </div>
@@ -64,14 +64,14 @@
             <div class="statistic">
                 <div class="users">
                     <p class="statistic_users">{{ $usersCount }}</p>
-                    <img src="{{ 'images/Group.svg' }}" alt="" class="users_svg">
+                    <img src="{{ asset('images/Group.svg') }}" alt="" class="users_svg">
                 </div>
                 <div class="svg_statistic">
-                    <img src="{{ 'images/statistic.svg' }}" alt="тут должна быть иконка">
+                    <img src="{{ asset('images/statistic.svg') }}" alt="тут должна быть иконка">
                 </div>
                 <div class="works">
                     <p class="statistic_works">{{ $postsCount }}</p>
-                    <img src="{{ 'images/Group2.svg' }}" alt="" class="works_svg">
+                    <img src="{{ asset('images/Group2.svg') }}" alt="" class="works_svg">
                 </div>
             </div>
         </section>

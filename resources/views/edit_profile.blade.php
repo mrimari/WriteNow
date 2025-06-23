@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('style')
-    <link rel="stylesheet" href="{{ asset('css/edit_profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/edit_profile.css') }}?v={{ time() }}">
 @endsection
 @section('content')
     <form method="POST" action="{{ route('edit_profile') }}" class="content" enctype="multipart/form-data">

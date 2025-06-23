@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('style')
-<link rel="stylesheet" href="{{ asset('css/legal.css') }}">
+<link rel="stylesheet" href="{{ asset('css/legal.css') }}?v={{ time() }}">
 @endsection
 
 @section('title', 'О нас - WriteNow')

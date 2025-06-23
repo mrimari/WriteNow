@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('style')
-    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}?v={{ time() }}">
 @endsection
 @section('content')
     <div class="profile">
@@ -74,7 +74,7 @@
                 <div class="card_footer">
                     <p class="time">{{ $post->created_at->format('d.m.Y') }}</p>
                     <div class="likes">
-                        <img class="like" src="{{ asset('images/Like.svg') }}" alt="like">
+                        <img class="like" src="{{ asset('images/like.svg') }}" alt="like">
                         <span class="num">{{ $post->likes_count - $post->dislikes_count }}</span>
                     </div>
                 </div>

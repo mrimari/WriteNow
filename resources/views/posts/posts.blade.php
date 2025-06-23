@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('style')
-    <link rel="stylesheet" href="{{ asset('css/posts.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/posts.css') }}?v={{ time() }}">
 @endsection
 @section('content')
     <form method="GET" action="{{ route('posts') }}" class="search_form" data-filter-form>
@@ -50,7 +50,7 @@
                         <span class="writer">Поэт</span>
                     </div>
                     <div class="likes">
-                        <img class="like" src="{{ 'images/like.svg' }}" alt="">
+                        <img class="like" src="{{ asset('images/like.svg') }}" alt="">
                         <span class="num">{{ $post->likes_count - $post->dislikes_count }}</span>
                     </div>
                 </div>
