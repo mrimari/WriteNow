@@ -2,198 +2,193 @@
 
 @section('style')
 <style>
-    .card {
-        border-radius: 18px;
-        box-shadow: 0 2px 12px 0 rgba(0,0,0,0.08);
-        margin-bottom: 24px;
-        border: none;
-        background: #fff8f0;
-    }
-    .card-header, .card-body {
-        background: transparent;
-    }
-    .achievement-icon i, .report-item i {
-        color: #ffb300;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
-    }
-    .btn-outline-primary, .btn-outline-secondary, .btn-outline-danger, .btn-success, .btn-danger {
-        border-radius: 10px;
-        font-weight: 500;
-        min-width: 110px;
-        margin: 2px 0;
-    }
-    .btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-outline-danger:hover, .btn-success:hover, .btn-danger:hover {
-        filter: brightness(0.95);
-        transform: scale(1.04);
-        transition: 0.2s;
-    }
-    .card-title {
-        color: #975a1c;
-        font-weight: bold;
-        font-size: 1.2rem;
-    }
-    .card-text, .text-muted {
-        color: #6c757d;
-    }
-    .user-avatar img, .avatar-placeholder {
-        width: 40px;
-        height: 40px;
-        object-fit: cover;
-        border-radius: 50%;
-        border: 2px solid #ffb300;
+    .report-card {
+        max-width: 600px;
+        margin: 60px auto 40px auto;
         background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 24px 0 rgba(151,90,28,0.10);
+        border: 2px solid #e6ceb2;
+        padding: 36px 32px 28px 32px;
+        position: relative;
     }
-    .user-item {
-        background: #f8f9fa;
-        border-radius: 12px;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    .report-card h1 {
+        font-size: 2em;
+        color: #301b00;
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-align: left;
     }
-    .pagination .page-link {
-        border-radius: 8px !important;
+    .report-card .admin-subtitle {
+        text-align: left;
+        margin-bottom: 28px;
+    }
+    .report-info-row {
+        display: flex;
+        margin-bottom: 14px;
+        align-items: flex-start;
+    }
+    .report-info-label {
+        min-width: 140px;
         color: #975a1c;
+        font-weight: 600;
+        font-size: 1em;
+        margin-right: 10px;
+        text-align: left;
     }
-    .pagination .page-item.active .page-link {
-        background: #975a1c;
-        color: #fff;
-        border: none;
+    .report-info-value {
+        color: #301b00;
+        font-size: 1em;
+        text-align: left;
+        word-break: break-word;
+    }
+    .report-status {
+        font-weight: bold;
+        padding: 4px 14px;
+        border-radius: 8px;
+        font-size: 1em;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+    .report-status-pending { background: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+    .report-status-resolved { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .report-status-rejected { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .report-content-block {
+        background: #f8f6f0;
+        border: 2px solid #e6ceb2;
+        border-radius: 12px;
+        padding: 20px 18px;
+        margin: 28px 0 18px 0;
+        box-shadow: 0 2px 12px 0 rgba(151,90,28,0.06);
+    }
+    .report-content-title {
+        color: #975a1c;
+        font-size: 1.1em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .report-content-text {
+        color: #301b00;
+        font-size: 1em;
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+    .report-content-author {
+        color: #975a1c;
+        font-size: 0.95em;
+        margin-bottom: 10px;
+    }
+    .admin-empty-state {
+        background: #fff8f0;
+        border: 2px dashed #e6ceb2;
+        border-radius: 12px;
+        padding: 30px 20px;
+        text-align: center;
+        color: #975a1c;
+        font-size: 1.1em;
+        margin: 0 auto;
+    }
+    .report-actions {
+        display: flex;
+        gap: 18px;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+    .report-back {
+        display: flex;
+        justify-content: center;
+        margin-top: 38px;
     }
 </style>
 @endsection
 
 @section('content')
-<div style="margin-top: 100px; z-index: 1000;" class="admin-container">
-    <div class="admin-header">
-        <h1>Жалоба #{{ $report->id }}</h1>
-        <p class="admin-subtitle">Детальная информация</p>
-    </div>
-    
-    @include('admin.navigation')
-    
-    <!-- Основная информация -->
-    <div class="admin-form">
-        <div class="admin-form-group">
-            <label class="admin-form-label">Статус</label>
-            <div>
-                @if($report->status === 'pending')
-                    <span class="admin-status admin-status-pending">Ожидает рассмотрения</span>
-                @elseif($report->status === 'resolved')
-                    <span class="admin-status admin-status-resolved">Принята</span>
-                @elseif($report->status === 'rejected')
-                    <span class="admin-status admin-status-rejected">Отклонена</span>
-                @else
-                    <span class="admin-status">{{ $report->status }}</span>
-                @endif
-            </div>
-        </div>
-        
-        <div class="admin-form-group">
-            <label class="admin-form-label">Отправитель</label>
-            <div>{{ $report->user->name ?? 'Неизвестный пользователь' }}</div>
-        </div>
-        
-        <div class="admin-form-group">
-            <label class="admin-form-label">Причина</label>
-            <div>{{ $report->reason }}</div>
-        </div>
-        
-        @if($report->description)
-            <div class="admin-form-group">
-                <label class="admin-form-label">Описание</label>
-                <div>{{ $report->description }}</div>
-            </div>
-        @endif
-        
-        <div class="admin-form-group">
-            <label class="admin-form-label">Тип контента</label>
-            <div>
-                @if($report->reportable_type === 'App\\Models\\Post')
-                    Пост
-                @elseif($report->reportable_type === 'App\\Models\\Comment')
-                    Комментарий
-                @else
-                    {{ class_basename($report->reportable_type) }}
-                @endif
-            </div>
-        </div>
-        
-        <div class="admin-form-group">
-            <label class="admin-form-label">Дата создания</label>
-            <div>{{ $report->created_at->format('d.m.Y H:i') }}</div>
+<div class="report-card">
+    <h1>Жалоба #{{ $report->id }}</h1>
+    <div class="admin-subtitle">Детальная информация</div>
+    <div class="report-info-row">
+        <div class="report-info-label">Статус</div>
+        <div class="report-info-value">
+            @if($report->status === 'pending')
+                <span class="report-status report-status-pending">Ожидает рассмотрения</span>
+            @elseif($report->status === 'resolved')
+                <span class="report-status report-status-resolved">Принята</span>
+            @elseif($report->status === 'rejected')
+                <span class="report-status report-status-rejected">Отклонена</span>
+            @else
+                <span class="report-status">{{ $report->status }}</span>
+            @endif
         </div>
     </div>
-    
-    <!-- Контент -->
+    <div class="report-info-row">
+        <div class="report-info-label">Отправитель</div>
+        <div class="report-info-value">{{ $report->user->name ?? 'Неизвестный пользователь' }}</div>
+    </div>
+    <div class="report-info-row">
+        <div class="report-info-label">Причина</div>
+        <div class="report-info-value">{{ $report->reason }}</div>
+    </div>
+    @if($report->description)
+        <div class="report-info-row">
+            <div class="report-info-label">Описание</div>
+            <div class="report-info-value">{{ $report->description }}</div>
+        </div>
+    @endif
+    <div class="report-info-row">
+        <div class="report-info-label">Тип контента</div>
+        <div class="report-info-value">
+            @if($report->reportable_type === 'App\\Models\\Post')
+                Пост
+            @elseif($report->reportable_type === 'App\\Models\\Comment')
+                Комментарий
+            @else
+                {{ class_basename($report->reportable_type) }}
+            @endif
+        </div>
+    </div>
+    <div class="report-info-row">
+        <div class="report-info-label">Дата создания</div>
+        <div class="report-info-value">{{ $report->created_at->format('d.m.Y H:i') }}</div>
+    </div>
+
     @if($report->reportable)
-        <div class="admin-form">
-            <h3 class="admin-card-title">Контент</h3>
-            <div class="admin-table-container">
-                @if($report->reportable_type === 'App\\Models\\Post')
-                    <div style="margin-bottom: 15px;">
-                        <h4 style="color: #301b00; margin-bottom: 10px;">{{ $report->reportable->title }}</h4>
-                        <div style="background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 8px; border: 1px solid #e6ceb2; margin-bottom: 15px;">
-                            {{ Str::limit($report->reportable->content, 600) }}
-                            @if(strlen($report->reportable->content) > 600)
-                                <span style="color: #975a1c;">...</span>
-                            @endif
-                        </div>
-                        
-                        <div style="margin-bottom: 15px; font-size: 14px; color: #975a1c;">
-                            Автор: {{ $report->reportable->user->name ?? 'Неизвестно' }} | 
-                            Создан: {{ $report->reportable->created_at->format('d.m.Y') }}
-                        </div>
-                        
-                        <a href="{{ route('posts.show', $report->reportable) }}" class="admin-btn admin-btn-primary" target="_blank">
-                            Открыть пост
-                        </a>
-                    </div>
-                @elseif($report->reportable_type === 'App\\Models\\Comment')
-                    <div style="background: rgba(255, 255, 255, 0.8); padding: 15px; border-radius: 8px; border: 1px solid #e6ceb2; margin-bottom: 15px;">
-                        <p style="margin-bottom: 10px;">{{ $report->reportable->content }}</p>
-                        <div style="font-size: 14px; color: #975a1c;">
-                            Автор: {{ $report->reportable->user->name ?? 'Неизвестно' }} | 
-                            Создан: {{ $report->reportable->created_at->format('d.m.Y') }}
-                        </div>
-                    </div>
-                @else
-                    <p>Контент недоступен для предварительного просмотра</p>
-                @endif
-            </div>
+        <div class="report-content-block">
+            <div class="report-content-title">Контент</div>
+            @if($report->reportable_type === 'App\\Models\\Post')
+                <div class="report-content-title" style="font-size: 1em; margin-bottom: 8px;">{{ $report->reportable->title }}</div>
+                <div class="report-content-text">{{ Str::limit($report->reportable->content, 600) }}@if(strlen($report->reportable->content) > 600)<span style="color: #975a1c;">...</span>@endif</div>
+                <div class="report-content-author">Автор: {{ $report->reportable->user->name ?? 'Неизвестно' }} | Создан: {{ $report->reportable->created_at->format('d.m.Y') }}</div>
+                <a href="{{ route('posts.show', $report->reportable) }}" class="admin-btn admin-btn-primary" target="_blank">Открыть пост</a>
+            @elseif($report->reportable_type === 'App\\Models\\Comment')
+                <div class="report-content-text">{{ $report->reportable->content }}</div>
+                <div class="report-content-author">Автор: {{ $report->reportable->user->name ?? 'Неизвестно' }} | Создан: {{ $report->reportable->created_at->format('d.m.Y') }}</div>
+            @else
+                <div class="admin-empty-state">Контент недоступен для предварительного просмотра</div>
+            @endif
         </div>
     @else
-        <div class="admin-form">
-            <h3 class="admin-card-title">Контент</h3>
-            <div class="admin-empty-state">
-                <p>Контент был удален</p>
-            </div>
-        </div>
+        <div class="admin-empty-state">Контент был удален</div>
     @endif
-    
-    <!-- Действия -->
+
     @if($report->status === 'pending')
-        <div class="admin-form">
-            <h3 class="admin-card-title">Действия</h3>
-            <div style="display: flex; gap: 15px; justify-content: center;">
-                <form action="{{ route('reports.resolve', $report) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="admin-btn admin-btn-success" onclick="return confirm('Принять жалобу?')">
-                        Принять
-                    </button>
-                </form>
-                
-                <form action="{{ route('reports.reject', $report) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="admin-btn admin-btn-danger" onclick="return confirm('Отклонить жалобу?')">
-                        Отклонить
-                    </button>
-                </form>
-            </div>
+        <div class="report-actions">
+            <form action="{{ route('reports.resolve', $report) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="admin-btn admin-btn-success" onclick="return confirm('Принять жалобу?')">
+                    Принять
+                </button>
+            </form>
+            <form action="{{ route('reports.reject', $report) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="admin-btn admin-btn-danger" onclick="return confirm('Отклонить жалобу?')">
+                    Отклонить
+                </button>
+            </form>
         </div>
     @endif
-    
-    <!-- Навигация -->
-    <div style="text-align: center; margin-top: 30px;">
+    <div class="report-back">
         <a href="{{ route('admin.reports') }}" class="admin-btn admin-btn-primary">
             Назад к списку
         </a>

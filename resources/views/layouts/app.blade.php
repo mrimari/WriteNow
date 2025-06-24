@@ -9,6 +9,9 @@
     @if(request()->routeIs('admin.*'))
         <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v={{ filemtime(public_path('css/admin.css')) }}">
     @endif
+    @if(Auth::check() && Auth::user()->is_admin)
+        <meta name="current-admin-id" content="{{ Auth::id() }}">
+    @endif
     @yield('style')
 </head>
 
@@ -22,7 +25,7 @@
                 
                 <!-- Десктопное меню -->
                 <div class="desktop-menu">
-                    <a href="{{ route('posts') }}" class="nav_link {{ request()->routeIs('posts') ? 'active' : '' }}" id="katalog">Открой</a>
+                    <a href="{{ route('posts') }}" class="nav_link {{ request()->routeIs('posts') ? 'active' : '' }}" id="katalog">Произведения</a>
                     <a href="{{ route('users') }}" class="nav_link {{ request()->routeIs('users') ? 'active' : '' }}">Творцы</a>
                     <a href="{{ route('about') }}" class="nav_link {{ request()->routeIs('about') ? 'active' : '' }}">О нас</a>
                     @if (Auth::check())
@@ -110,6 +113,15 @@
 
         </footer>
     </div>
+
+    <div id="toast-container" style="position: fixed; top: 30px; right: 30px; z-index: 9999;"></div>
+    <script src="{{ asset('js/script.js') }}?v={{ filemtime(public_path('js/script.js')) }}"></script>
+    <script>
+        window.LaravelToast = {
+            success: @json(session('success')),
+            error: @json(session('error'))
+        };
+    </script>
 
     <script>
         // Бургер меню

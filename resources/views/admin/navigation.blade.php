@@ -20,5 +20,9 @@
             <span class="admin-nav-icon">⚠️</span>
             Жалобы
         </a>
+        <a href="{{ route('admin.categories.index') }}" class="admin-nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+            <span class="admin-nav-icon">🏷️</span>
+            Жанры
+        </a>
     </div>
 </div> 

@@ -93,10 +93,9 @@
             <input type="hidden" name="content" id="content-hidden">
             <select name="genre" id="" class="genre" required>
                 <option value="">Жанр</option>
-                <option value="Романтика">Романтика</option>
-                <option value="Фантастика">Фантастика</option>
-                <option value="Психология">Психология</option>
-                <option value="Детектив">Детектив</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                @endforeach
             </select>
             @error('genre')
                 {{ $message }}

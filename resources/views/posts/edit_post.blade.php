@@ -30,10 +30,9 @@
 
             <select name="genre" class="genre" required>
                 <option value="">Жанр</option>
-                <option value="Романтика" {{ $post->genre == 'Романтика' ? 'selected' : '' }}>Романтика</option>
-                <option value="Фантастика" {{ $post->genre == 'Фантастика' ? 'selected' : '' }}>Фантастика</option>
-                <option value="Психология" {{ $post->genre == 'Психология' ? 'selected' : '' }}>Психология</option>
-                <option value="Детектив" {{ $post->genre == 'Детектив' ? 'selected' : '' }}>Детектив</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->name }}" {{ $post->genre == $category->name ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
             </select>
             @error('genre'){{ $message }}@enderror
 

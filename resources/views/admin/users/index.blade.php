@@ -9,7 +9,7 @@
     
     @include('admin.navigation')
     
-    <div class="admin-table-container">
+    <div class="admin-table-container" id="admin-users-table">
         <table class="admin-table">
             <thead>
                 <tr>
@@ -71,7 +71,7 @@
         </table>
         
         <div class="admin-pagination">
-            {{ $users->links() }}
+            {!! preg_replace('/<a /', '<a class="admin-pagination-link" ', $users->links()) !!}
         </div>
     </div>
 </div>

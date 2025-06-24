@@ -83,15 +83,32 @@ class AdminController extends Controller
 
     public function toggleAdmin(User $user)
     {
+        if (auth()->id() === $user->id) {
+            if (request()->ajax()) {
+                return response()->json(['error' => 'Нельзя снимать или назначать админа самому себе.'], 403);
+            }
+            return redirect()->back()->with('error', 'Нельзя снимать или назначать админа самому себе.');
+        }
         $user->is_admin = !$user->is_admin;
         $user->save();
-        
+        if (request()->ajax()) {
+            return response()->json(['success' => 'Статус администратора успешно изменен']);
+        }
         return redirect()->back()->with('success', 'Статус администратора успешно изменен');
     }
 
     public function deleteUser(User $user)
     {
+        if (auth()->id() === $user->id) {
+            if (request()->ajax()) {
+                return response()->json(['error' => 'Нельзя удалить самого себя.'], 403);
+            }
+            return redirect()->back()->with('error', 'Нельзя удалить самого себя.');
+        }
         $user->delete();
+        if (request()->ajax()) {
+            return response()->json(['success' => 'Пользователь успешно удален']);
+        }
         return redirect()->back()->with('success', 'Пользователь успешно удален');
     }
 
@@ -117,8 +134,17 @@ class AdminController extends Controller
 
     public function banUser(User $user)
     {
+        if (auth()->id() === $user->id) {
+            if (request()->ajax()) {
+                return response()->json(['error' => 'Нельзя забанить самого себя.'], 403);
+            }
+            return redirect()->back()->with('error', 'Нельзя забанить самого себя.');
+        }
         $user->banned = true;
         $user->save();
+        if (request()->ajax()) {
+            return response()->json(['success' => 'Пользователь забанен']);
+        }
         return redirect()->back()->with('success', 'Пользователь забанен');
     }
 
@@ -126,6 +152,9 @@ class AdminController extends Controller
     {
         $user->banned = false;
         $user->save();
+        if (request()->ajax()) {
+            return response()->json(['success' => 'Пользователь разбанен']);
+        }
         return redirect()->back()->with('success', 'Пользователь разбанен');
     }
 }

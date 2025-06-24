@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 /**
@@ -12,7 +13,7 @@ class PostController extends Controller
 {
     public function index()
     {
-        $genres = Post::select('genre')->distinct()->pluck('genre');
+        $genres = \App\Models\Category::pluck('name');
         $forms = Post::select('form')->distinct()->pluck('form');
 
         // Определяем количество элементов на странице в зависимости от устройства
@@ -67,7 +68,8 @@ class PostController extends Controller
 
     public function create()
     {
-        return view('posts.create_post');
+        $categories = Category::all();
+        return view('posts.create_post', compact('categories'));
     }
 
     public function drafts()
@@ -157,7 +159,8 @@ class PostController extends Controller
         if (auth()->id() !== $post->user_id) {
             abort(403, 'Нет доступа');
         }
-        return view('posts.edit_post', compact('post'));
+        $categories = Category::all();
+        return view('posts.edit_post', compact('post', 'categories'));
     }
 
     public function update(Request $request, Post $post)

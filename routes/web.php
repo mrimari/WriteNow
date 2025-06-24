@@ -8,6 +8,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TextCheckController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
@@ -35,7 +36,7 @@ Route::middleware('guest')->group(function () {
 });
 
 // Защищённые роуты
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'banned'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/profile', [AuthController::class, 'show'])->name('profile');
     Route::delete('/profile', [AuthController::class, 'destroy'])->name('profile.destroy');
@@ -88,6 +89,12 @@ Route::middleware('auth')->group(function () {
         Route::delete('/posts/{post}', [AdminController::class, 'deletePost'])->name('admin.posts.delete');
         Route::post('/users/{user}/ban', [AdminController::class, 'banUser'])->name('admin.users.ban');
         Route::post('/users/{user}/unban', [AdminController::class, 'unbanUser'])->name('admin.users.unban');
+        Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
+        Route::get('/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+        Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+        Route::get('/categories/{category}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+        Route::put('/categories/{category}', [CategoryController::class, 'update'])->name('admin.categories.update');
+        Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
     });
 
     // Маршруты для подписок
@@ -101,3 +108,8 @@ Route::middleware('auth')->group(function () {
     // Маршрут для проверки текста
     Route::post('/text/check', [TextCheckController::class, 'check'])->name('text.check');
 });
+
+// Страница для забаненных пользователей
+Route::get('/banned', function () {
+    return view('banned');
+})->name('banned');
